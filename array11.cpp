@@ -1,89 +1,108 @@
-// #include <iostream>
-// #include <string>
-// #include <set>
-// using namespace std;
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cctype>
+using namespace std;
+bool inputnumber(const string& input){
+    for (char c : input){
+        if (isalnum(c)){
+            return true;
+        }
+
+    }
+    return false;
+}
+// string
+
 //     int main(){
-//     string input;
-//     int i = 0;
-//     int size = 100;
-//     char output[size];
-//     getline(cin,input);
-
-//     // Create a set to store the digits found in the input string
-//     set<char> digits_found;
-
-//     // Iterate through the characters in the input string
-//     for (char c : input) {
-//         if (isdigit(c)) {
-//             digits_found.insert(c);
-//         }
+//         bool number[] = {"0","1","2","3","4","5","6","7","8","9"};
+//         string input;
+//         int i=0,j=0;
+//         getline(cin,input);
+        
 //     }
 
-    
-//     for (char c = '0'; c <= '9'; ++c) {
-//         if (digits_found.find(c) == digits_found.end()) {
-//             output[i] = c;
-//             i++;
-//         } 
-//     }
-//     size_t len;
-//     len = sizeof(output)/sizeof(output[0]);
-//     // len = *(&output + 1) - output;
-//     cout<<len<<endl;
-//     cout<<output[0]<<endl;
-//     cout<<output[1]<<endl;
-//     cout<<output[4]<<endl;
-//     for (int j = 0; j<len;j++){
-//         cout<<output[j]<<",";
-//     }
-//     cout << endl;
-//     }
-// #include<iostream>
-// using namespace std;
-// string input;
-// int main(){
-//     cout << "Enter a string: ";
-//     getline(cin,input);
-
-    
-//     set<char> digits_found;
-
-   
-//     for (char c : input) {
-//         if (isdigit(c)) {
-//             digits_found.insert(c);
-//         }
-//     }
-
-//     cout << "Numbers not found in the string: ";
-//     for (char c = '0'; c <= '9'; ++c) {
-//         if (digits_found.find(c) == digits_found.end()) {
-//             cout << c ;
-//         }
-
-//     cout << endl;
-    
-// }
-// }
 
 #include <bits/stdc++.h>
 using namespace std;
-int main(){
-    string input;
-    getline(cin,input);
-    bool find[10] = {false};
-    for (char c :input){
-        int k = c - '0';
-        if (0<=k &&k<=9) find[k] = true;
-    }
-    string missing = "";
-    for (int i =0;i<10;++i){
-        if (!find[i]) missing+= to_string(i) + ',';
-    }
-    if (missing.length()==0)
-        cout<<"None";
-    
-    else
-        cout<<missing.substr(0,missing.length()-1);
+struct point{
+    int x,y;
+};
+struct rect{
+    point left,right;
+};
+bool doOverlap(rect rect1,rect rect2){
+    // if rectangle has area 0, no overlap
+    if (rect1.left.x == rect2.left.x || rect1.left.y == rect2.left.y || rect1.left.x == rect2.left.x || rect1.right.y == rect2.right.y)
+        return false;
+   
+     // If one rectangle is on left side of other
+    if (rect1.left.x > rect2.right.x || rect2.left.x > rect1.right.x)
+        return false;
+ 
+    // If one rectangle is above other
+    if (rect1.right.y > rect2.left.y || rect2.left.y > rect1.left.y)
+        return false;
+ 
+    return true;
     
 }
+bool isRectangle(point l1,point r1 ){
+    //check if it is not point
+    if (l1.x==r1.x&&l1.y==r1.y){
+        return false;
+    }
+    //check if it is not line
+    if (l1.x==r1.x||l1.y==r1.y){
+        return false;
+    }
+    //check if it is rectangle
+    if (r1.x > l1.x && r1.y > l1.y){
+        return true;
+    }
+    return false;
+}
+// Function to calculate the area of a rectangle
+int calculateArea(const rect& rect1) {
+    return (rect1.right.x - rect1.left.x) * (rect1.right.y - rect1.left.y);
+}
+int calOverlaparea(rect rect1,rect rect2){
+    // Calculate the coordinates of the overlapping region
+    int overlapX1 = max(rect1.left.x, rect2.left.x);
+    int overlapY1 = max(rect1.left.y, rect2.left.y);
+    int overlapX2 = min(rect1.right.x, rect2.right.x);
+    int overlapY2 = min(rect1.right.y, rect2.right.y);
+
+    // Check if there is an actual overlap
+    // if (overlapX1 < overlapX2 && overlapY1 < overlapY2) {
+    if (doOverlap(rect1,rect2)){
+        // Calculate the area of the overlapping region
+        rect overlapRect = {overlapX1, overlapY1, overlapX2, overlapY2};
+        return calculateArea(overlapRect);
+    } else {
+        // No overlap
+    return 0;
+    }
+}
+int main(){
+    int N,x1,y1,x2,y2;
+    cin>>N;
+    rect inputRect[N];
+    for (int i= 0; i<N;i++){
+        cin>>x1>>y1>>x2>>y2;
+        inputRect[i].left.x = x1;
+        inputRect[i].left.y = y1;
+        inputRect[i].right.x = x2;
+        inputRect[i].right.y = y2;
+        if (!isRectangle(inputRect[i].left,inputRect[i].right)){
+            cout<<"Not rectangle"<<endl;
+        }
+    }
+    for (int j = 0; j < N ; j++ ){
+        for (int k = j + 1 ; k < N ; k++){
+            
+        }
+    }
+    return 0;
+}
+    
